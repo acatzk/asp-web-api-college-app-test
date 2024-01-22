@@ -25,6 +25,32 @@ namespace College_App.Controllers
             return Ok(studentDTO);
         }
 
+        [HttpPost]
+        [Route("Create")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<StudentDTO> CreateStudent([FromBody]StudentDTO model)
+        {
+            if (model == null)
+                return BadRequest();
+
+            var newId = CollegeRepository.Students.LastOrDefault()!.Id + 1;
+
+            Student student = new Student
+            {
+                Id = newId,
+                StudentName = model.StudentName,
+                Address = model.Address,
+                Email = model.Email
+            };
+            CollegeRepository.Students.Add(student);
+
+            model.Id = student.Id;
+
+            return Ok(model);
+        }
+
         [HttpGet]
         [Route("{id:int}", Name = "GetStudentById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
