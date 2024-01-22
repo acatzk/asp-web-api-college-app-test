@@ -9,31 +9,63 @@ namespace College_App.Controllers
     {
         [HttpGet]
         [Route("All", Name = "GetAllStudents")]
-        public IEnumerable<Student> GetStudents()
+        public ActionResult<IEnumerable<Student>> GetStudents()
         {
-            return CollegeRepository.Students;
+            // OK - 200 Success
+            return Ok(CollegeRepository.Students);
         }
 
         [HttpGet]
         [Route("{id:int}", Name = "GetStudentById")]
-        public Student GetStudentById(int id)
+        public ActionResult<Student> GetStudentById(int id)
         {
-            return CollegeRepository.Students.Where(n => n.Id == id).FirstOrDefault();
+            // Badrequest - 400 - Badrequest - Client error
+            if (id <= 0) 
+                return BadRequest();
+
+            var student = CollegeRepository.Students.Where(n => n.Id == id).FirstOrDefault();
+
+            // Not Found - 404 - Notfound - Client error
+            if (student == null) 
+                return NotFound($"The student with id {id} not found");
+
+            // Ok - 200 Success
+            return Ok(student);
         }
 
         [HttpGet]
         [Route("{name}", Name = "GetStudentByName")]
-        public Student GetStudentByName(string name)
+        public ActionResult<Student> GetStudentByName(string name)
         {
-            return CollegeRepository.Students.Where(n => n.StudentName == name).FirstOrDefault();
+            // Badrequest - 400 - Badrequest - Client error
+            if (string.IsNullOrEmpty(name))
+                return BadRequest();
+
+            var student = CollegeRepository.Students.Where(n => n.StudentName == name).FirstOrDefault();
+
+            // Not Found - 404 - Notfound - Client error
+            if (student == null)
+                return NotFound($"The student with name {name} not found");
+
+            // Ok - 200 Success
+            return Ok(student);
         }
 
         [HttpDelete]
         [Route("{id:int}", Name = "DeleteStudentById")]
-        public bool DeleteStudentById(int id)
-        {
+        public ActionResult<bool> DeleteStudentById(int id) { 
+        
+              // Badrequest - 400 - Badrequest - Client error
+            if (id <= 0) 
+                return BadRequest();
+
             var student = CollegeRepository.Students.Where(n => n.Id == id).FirstOrDefault();
-            CollegeRepository.Students.Remove(student);
+
+            // Not Found - 404 - Notfound - Client error
+            if (student == null) 
+                return NotFound($"The student with id {id} not found");
+
+            CollegeRepository.Students.Remove(student!);
 
             return true;
         }
