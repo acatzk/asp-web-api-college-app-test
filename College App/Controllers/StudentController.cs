@@ -9,6 +9,8 @@ namespace College_App.Controllers
     {
         [HttpGet]
         [Route("All", Name = "GetAllStudents")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<IEnumerable<Student>> GetStudents()
         {
             // OK - 200 Success
@@ -17,6 +19,10 @@ namespace College_App.Controllers
 
         [HttpGet]
         [Route("{id:int}", Name = "GetStudentById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<Student> GetStudentById(int id)
         {
             // Badrequest - 400 - Badrequest - Client error
@@ -35,6 +41,10 @@ namespace College_App.Controllers
 
         [HttpGet]
         [Route("{name}", Name = "GetStudentByName")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<Student> GetStudentByName(string name)
         {
             // Badrequest - 400 - Badrequest - Client error
@@ -53,6 +63,10 @@ namespace College_App.Controllers
 
         [HttpDelete]
         [Route("{id:int}", Name = "DeleteStudentById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<bool> DeleteStudentById(int id) { 
         
               // Badrequest - 400 - Badrequest - Client error
