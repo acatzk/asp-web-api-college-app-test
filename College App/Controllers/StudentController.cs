@@ -27,7 +27,7 @@ namespace College_App.Controllers
 
         [HttpPost]
         [Route("Create")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<StudentDTO> CreateStudent([FromBody]StudentDTO model)
@@ -45,10 +45,13 @@ namespace College_App.Controllers
                 Email = model.Email
             };
             CollegeRepository.Students.Add(student);
-
+            
             model.Id = student.Id;
 
-            return Ok(model);
+            // Status - 201
+            // fetch api GetStudentById
+            // Return new student details
+            return CreatedAtRoute("GetStudentById", new { id = model.Id }, model);
         }
 
         [HttpGet]
