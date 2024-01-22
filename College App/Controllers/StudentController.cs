@@ -13,8 +13,16 @@ namespace College_App.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<IEnumerable<Student>> GetStudents()
         {
+            var studentDTO = CollegeRepository.Students.Select(s => new StudentDTO()
+            {
+                Id = s.Id,
+                StudentName = s.StudentName,
+                Address = s.Address,
+                Email = s.Email
+            });
+
             // OK - 200 Success
-            return Ok(CollegeRepository.Students);
+            return Ok(studentDTO);
         }
 
         [HttpGet]
