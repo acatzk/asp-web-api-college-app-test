@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using College_App.Validations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace College_App.Models
@@ -27,5 +28,7 @@ namespace College_App.Models
         [Compare(nameof(Password))]
         public string ConfirmPassword { get; set; }
 
+        [DateCheck]
+        public DateTime AdmissionDate { get; set; }
     }
 }
