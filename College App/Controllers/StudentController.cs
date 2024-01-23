@@ -54,6 +54,27 @@ namespace College_App.Controllers
             return CreatedAtRoute("GetStudentById", new { id = model.Id }, model);
         }
 
+        [HttpPut]
+        [Route("Update")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult UpdateStudent([FromBody] StudentDTO model)
+        {
+            if (model == null || model.Id <= 0) return BadRequest();
+
+            var existingStudent = CollegeRepository.Students.FirstOrDefault(s => s.Id == model.Id);
+
+            if (existingStudent == null) return NotFound();
+
+            existingStudent.StudentName = model.StudentName;
+            existingStudent.Address = model.Address;
+            existingStudent.Email = model.Email;
+
+            return NoContent();
+        }
+
         [HttpGet]
         [Route("{id:int}", Name = "GetStudentById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
